@@ -1,0 +1,68 @@
+data segment
+string db 100 dup('$')
+msg1 db 0ah,0dh,"enter a sentence :$"
+msg2 db 0ah,0dh,"no of words:$" 
+msg3 db 0ah,0dh,"no of occurence of first character:$"
+data ends
+code segment
+assume cs:code, ds:data
+start:mov ax,data
+mov ds,ax
+lea dx,msg1
+mov ah,09h
+int 21h
+mov string,63h 
+lea dx,string
+mov ah,0ah
+int 21h
+mov bl,01h
+mov bh,00h
+lea si,string
+add si,02h
+mov cx,00h
+mov ah,[si]
+abc:mov al,[si]
+    cmp al,20h
+    jne def
+    inc bl
+def:cmp bl,0ah
+    jne ghi
+    mov bl,00h
+    inc bh
+ghi:inc si
+    cmp al,ah
+    je jkl
+    xor ah,20h
+    cmp al,ah
+    jne mno  
+jkl:inc cl
+    cmp cl,0ah
+    jne mno 
+    mov cl,00h
+    inc ch
+mno:cmp al,24h
+    jne abc 
+    add bx,3030h
+    add cx,3030h
+    lea dx,msg2
+    mov ah,09h
+    int 21h
+    mov dl,bh
+    mov ah,02h
+    int 21h
+    mov dl,bl
+    mov ah,02h
+    int 21h 
+    lea dx,msg3
+    mov ah,09h
+    int 21h
+    mov dl,ch
+    mov ah,02h
+    int 21h
+    mov dl,cl
+    mov ah,02h
+    int 21h 
+    mov ah,4ch
+    int 21h
+    code ends
+    end start
